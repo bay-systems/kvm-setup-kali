@@ -30,7 +30,8 @@ virt-install \
 --virt-type kvm \
 --name "$machineName" \
 --hvm \
---memory $(( $machineMemory * 1024 )) \                                                     --boot loader=/usr/share/OVMF/OVMF_CODE.fd,loader.readonly=yes,loader.type=pflash,nvram.template=/usr/share/OVMF/OVMF_VARS.fd,loader_secure=no \
+--memory $(( $machineMemory * 1024 )) \
+--boot loader=/usr/share/OVMF/OVMF_CODE.fd,loader.readonly=yes,loader.type=pflash,nvram.template=/usr/share/OVMF/OVMF_VARS.fd,loader_secure=no \
 --disk size="$diskSize",bus=virtio,format=qcow2 \
 --location $isoImage,initrd=install.amd/initrd.gz,kernel=install.amd/vmlinuz \
 --vcpus $cpuNumber \
