@@ -1,0 +1,44 @@
+# Some notes:
+
+# Prior to running this script it is recommended to update the osinfo-db:
+#   git clone https://gitlab.com/libosinfo/osinfo-db.git
+#   apt install gettext osinfo-db-tools
+#   cd osinfo-db
+#   make && make install
+
+# Some ISO images are not in the osinfo-db and therefore require initrd= and kernel= arguments to --location, e.g.:
+#   --location $isoImage,initrd=install.amd/initrd.gz,kernel=install.amd/vmlinuz
+
+# To find them in the ISO image use:
+#   isoinfo -J -i <ISO image> -l | grep -e '(initrd|vmlinuz)'                               # and:                                                                                      #   isoinfo -J -i <ISO image> -l | less                                                     # to find what directory they are in.  `isoinfo` is provided by the `genisoimage` package.
+
+# the --boot line below selects UEFI non-secure-boot and requires `ovmf` to be installed
+
+# the --extra-args allows console access to the installation
+
+# to exit the console: Shift-Ctrl-]
+
+
+machineName="kali"
+isoImage="/usr/local/src/kali/kali-linux-2024.2-installer-netinst-amd64.iso"
+machineMemory=2
+diskSize=40
+cpuNumber=2
+
+virt-install \
+--connect qemu:///system \
+--virt-type kvm \
+--name "$machineName" \
+--hvm \
+--memory $(( $machineMemory * 1024 )) \                                                     --boot loader=/usr/share/OVMF/OVMF_CODE.fd,loader.readonly=yes,loader.type=pflash,nvram.template=/usr/share/OVMF/OVMF_VARS.fd,loader_secure=no \
+--disk size="$diskSize",bus=virtio,format=qcow2 \
+--location $isoImage,initrd=install.amd/initrd.gz,kernel=install.amd/vmlinuz \
+--vcpus $cpuNumber \
+--cpu host \
+--osinfo detect=on \
+--os-variant debian12 \
+--network bridge=br0 \
+--graphics none \
+--accelerate \
+--console pty,target_type=serial \
+--extra-args 'console=ttyS0,115200n8 --- console=ttyS0,115200n8'
