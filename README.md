@@ -1,6 +1,6 @@
 # kvm-kali-setup
 
-Bash script to assist with setting up a Kali Linux virtual machine under KVM.
+Bash script to assist with setting up a Kali Linux virtual machine under KVM.  It can also be used to install other distros and serves as a useful template.
 
 This script allows one to set up a Kali Linux virtual machine on a remote Linux system from the command line.
 
@@ -42,11 +42,11 @@ This will make sure that `debian12` (or any later versions) can be selected for 
 ## Usage
 
 Edit the variables `machineName`, `isoImage`, `machineMemory`, `diskSize`, and `cpuNumber`.  `machineMemory` is the number of Gigabytes.  Recommended values are:
-
+```bash
 machineMemory=2
 diskSize=40
 cpuNumber=2
-
+```
 For the ISO image, it is recommended to use the [NetInstaller image of Kali](https://www.kali.org/get-kali/#kali-installer-images).
 
 
